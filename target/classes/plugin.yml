@@ -1,0 +1,14 @@
+name: rpgplugin
+version: '0.1'
+main: special.rpgplugin.Rpgplugin
+api-version: '1.19'
+commands:
+  team:
+    description: "Позволяет управлять командой"
+    usage: "Использование комманды: /team [create|invite|kick|leave|disband|info|setowner]"
+  class:
+    usage: "используй как то"
+  stat:
+    usage: "используй как то"
+  info:
+    usage: "используй как то"
