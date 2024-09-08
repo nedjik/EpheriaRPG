@@ -44,7 +44,7 @@ public class ExplosionArrow extends ProjectileAbility {
                 if(!target.isDead()){
                     particleManager.onceDisplay(new ParticleInstance(Particle.EXPLOSION_LARGE, target.getLocation(), 0, 5, 0));
                     target.getWorld().playSound(target, Sound.ENTITY_GENERIC_EXPLODE, 1, 1);
-                    getSelector().filterTargets(new PlayerWraper(player), target.getLocation().getNearbyLivingEntities(2).stream().toList()).forEach(entity -> {
+                    getSelector().filterTargets(new PlayerWraper(player), target.getLocation().getNearbyLivingEntities(3, 3, 3).stream().toList()).forEach(entity -> {
                         entity.damage(10);
                         EntityUtil.knockback(target, entity, 1);
                     });

@@ -12,6 +12,7 @@ public class Strength extends IStat {
 
     @Override
     protected void updateParam() {
+        player.sendMessage("Сила изменена");
         new PlayerWraper(player).getStat(StatsEnum.PHYSICAL_DAMAGE).setBaseValue(1 + Math.max(0, Math.round((getBaseValue()/5-1)*10)/100));
     }
 }
