@@ -20,30 +20,31 @@ public class ProjectileEvent implements Listener {
     private void onProjectileHit(ProjectileHitEvent event){
         Projectile projectile = event.getEntity();
         Location location = event.getEntity().getLocation();
-
-        if (projectile.getMetadata("ability").get(0).asBoolean()){
-            String abilityName = projectile.getMetadata("abilityName").get(0).asString();
-            ProjectileAbility ability = (ProjectileAbility) AbilityRegistry.getAbility(abilityName);
-            Player player = (Player) projectile.getShooter();
-            List<LivingEntity> targets = new ArrayList<>();
-            if (ability.getRadius() == 0){
-                if (event.getHitEntity() != null){
-                    targets = ability.getSelector().filterTargets(new PlayerWraper(player), Collections.singletonList((LivingEntity) event.getHitEntity()));
+        if (!projectile.getMetadata("ability").isEmpty()){
+            if (projectile.getMetadata("ability").get(0).asBoolean()){
+                String abilityName = projectile.getMetadata("abilityName").get(0).asString();
+                ProjectileAbility ability = (ProjectileAbility) AbilityRegistry.getAbility(abilityName);
+                Player player = (Player) projectile.getShooter();
+                List<LivingEntity> targets = new ArrayList<>();
+                if (ability.getRadius() == 0){
+                    if (event.getHitEntity() != null){
+                        targets = ability.getSelector().filterTargets(new PlayerWraper(player), Collections.singletonList((LivingEntity) event.getHitEntity()));
+                        ability.targetEffect(targets, player);
+                    }
+                } else {
+                    for (Entity entity : projectile.getNearbyEntities(ability.getRadius(), ability.getRadius(), ability.getRadius())) {
+                        if (entity instanceof LivingEntity && !entity.equals(player)) {
+                            targets.add((LivingEntity) entity);
+                        }
+                    }
+                    targets = ability.getSelector().filterTargets(new PlayerWraper(player), targets);
                     ability.targetEffect(targets, player);
                 }
-            } else {
-                for (Entity entity : projectile.getNearbyEntities(ability.getRadius(), ability.getRadius(), ability.getRadius())) {
-                    if (entity instanceof LivingEntity && !entity.equals(player)) {
-                        targets.add((LivingEntity) entity);
-                    }
-                }
-                targets = ability.getSelector().filterTargets(new PlayerWraper(player), targets);
-                ability.targetEffect(targets, player);
-            }
-            ability.executeOnEvent(event);
+                ability.executeOnEvent(event);
 
-            projectile.remove();
-            event.setCancelled(true);
+                projectile.remove();
+                event.setCancelled(true);
+            }
         }
     }
 }

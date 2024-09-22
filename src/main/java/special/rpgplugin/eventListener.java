@@ -14,18 +14,20 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.*;
+import special.rpgplugin.ability.Ability;
 import special.rpgplugin.ability.AbilityRegistry;
 import special.rpgplugin.ability.AbilitySelector;
 import special.rpgplugin.data.PlayerData;
+import special.rpgplugin.data.statsClasses.CountableStatEnum;
 import special.rpgplugin.data.statsClasses.StatsEnum;
 import special.rpgplugin.managers.TeamManager;
-import special.rpgplugin.utils.PlayerUtil;
-import special.rpgplugin.utils.PlayerWraper;
-import special.rpgplugin.utils.SaveUtil;
+import special.rpgplugin.utils.*;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.UUID;
+import java.util.function.Predicate;
 
 public class eventListener implements Listener {
 
@@ -65,6 +67,9 @@ public class eventListener implements Listener {
 
         if (event.getMaterial() == Material.BOOK && event.getAction().isRightClick()){
             AbilityRegistry.executeAbility(event.getItem().getItemMeta().getDisplayName(), player);
+        } else if (event.getMaterial() == Material.COMPASS && event.getAction().isRightClick()){
+            player.sendMessage("Позиция: " + player.getLocation().getX() + ", " + player.getLocation().getY() + ", " + player.getLocation().getZ() + "\n" +
+                    "Направление взгляда: " + player.getEyeLocation().getDirection().getX() + ", " + player.getEyeLocation().getDirection().getY() + ", " + player.getEyeLocation().getDirection().getZ() + "\n");
         }
     }
 
@@ -73,71 +78,42 @@ public class eventListener implements Listener {
         PlayerWraper player = new PlayerWraper(event.getPlayer());
 
         if (player.getStateData().inSpellPick()) {
-            switch (player.getPlayerClass()){
-                case MAGE:
-                    switch (event.getNewSlot()){
-                        case 0:
-                            AbilityRegistry.executeAbility("ManaBolt", player);
-                            break;
-                        case 1:
-                            AbilityRegistry.executeAbility("FireBall", player);
-                            break;
-                        case 2:
-                            AbilityRegistry.executeAbility("SelfHeal", player);
-                            break;
-                    }
-                    break;
-                case RANGER:
-                    switch (event.getNewSlot()){
-                        case 0:
-                            AbilityRegistry.executeAbility("Dash", player);
-                            break;
-                        case 1:
-                            AbilityRegistry.executeAbility("ArrowStorm", player);
-                            break;
-                        case 2:
-                            AbilityRegistry.executeAbility("ExplosionArrow", player);
-                            break;
-                    }
-                    break;
-                case WARRIOR:
-                    switch (event.getNewSlot()){
-                        case 0:
-                            AbilityRegistry.executeAbility("Lunge", player);
-                            break;
-                        case 1:
-                            AbilityRegistry.executeAbility("AgroCry", player);
-                            break;
-                        case 2:
-                            AbilityRegistry.executeAbility("BattleCry", player);
-                            break;
-                    }
-                    break;
-            }
+            if (event.getNewSlot() >= 0 || event.getNewSlot() < 4)
+            AbilityRegistry.executeAbility(player.getBind(event.getNewSlot()+1), player);
             player.getStateData().setSpellPick(false);
             event.setCancelled(true);
         }
     }
     @EventHandler
     private void onItemSwap(PlayerSwapHandItemsEvent event){
-        Player player = event.getPlayer();
+        PlayerWraper player = new PlayerWraper(event.getPlayer());
 
-        if (PlayerUtil.getPlayerData(player).getPlayerState().inSpellPick()) {
-            PlayerUtil.getPlayerData(player).getPlayerState().setSpellPick(false);
+        if (player.getStateData().inSpellPick()) {
+            player.getStateData().setSpellPick(false);
         } else {
-            PlayerUtil.getPlayerData(player).getPlayerState().setSpellPick(true);
-            player.getInventory().setHeldItemSlot(8);
+            if (Arrays.stream(player.getBinds()).anyMatch(s -> s != null)){
+                player.getStateData().setSpellPick(true);
+                player.player.getInventory().setHeldItemSlot(8);
+            } else {
+                player.sendMessage(ColorUtil.toColor("&cУ вас нет выбранных способностей."));
+            }
         }
         event.setCancelled(true);
     }
     @EventHandler
     private void onDamage(EntityDamageByEntityEvent event){
-        if(event.getDamager().getType() == EntityType.PLAYER){
+        if (event.getDamager().getType() == EntityType.PLAYER){
             if (event.getCause().equals(EntityDamageEvent.DamageCause.ENTITY_ATTACK) || event.getCause().equals(EntityDamageEvent.DamageCause.ENTITY_SWEEP_ATTACK)){
                 event.getDamager().sendMessage("[DEBUG]: Урон до модификатора " + event.getDamage());
                 event.setDamage(event.getDamage() * (new PlayerWraper((Player) event.getDamager()).getDamageModifier(StatsEnum.PHYSICAL_DAMAGE)));
                 event.getDamager().sendMessage("[DEBUG]: Урон после модификатора " + event.getDamage());
             }
+        }
+        if (event.getEntity().getType() == EntityType.PLAYER){
+            PlayerWraper player = new PlayerWraper((Player) event.getEntity());
+            player.getCountableStat(CountableStatEnum.HEALTH).spend(event.getDamage());
+            event.setDamage(0);
+            HealthUtil.updateHealth(player);
         }
     }
 }

@@ -23,6 +23,7 @@ public class AbilityRegistry {
 
     // Выполнение способности по её имени и игроку
     public static void executeAbility(String name, PlayerWraper player) {
+        if (name == null) return;
         Ability ability = getAbility(name);
         if (ability != null) {
             ability.execute(player);
@@ -42,6 +43,7 @@ public class AbilityRegistry {
         registerAbility(new ExplosionArrow());
         registerAbility(new ArrowStorm());
         registerAbility(new Dash());
+        registerAbility(new ArcaneExplosion());
         // Здесь регистрируются другие способности
     }
 }

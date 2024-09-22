@@ -1,6 +1,7 @@
 package special.rpgplugin.data.statsClasses.attributes;
 
 import org.bukkit.entity.Player;
+import special.rpgplugin.data.statsClasses.CountableStatEnum;
 import special.rpgplugin.data.statsClasses.IStat;
 import special.rpgplugin.data.statsClasses.MagicDamage;
 import special.rpgplugin.data.statsClasses.StatsEnum;
@@ -14,5 +15,6 @@ public class Intelligence extends IStat {
     @Override
     protected void updateParam() {
         new PlayerWraper(player).getStat(StatsEnum.MAGIC_DAMAGE).setBaseValue(1 + Math.max(0, Math.round((getBaseValue()/5-1)*10)/100));
+        new PlayerWraper(player).getCountableStat(CountableStatEnum.MANA).setBaseValue(getBaseValue()*2);
     }
 }

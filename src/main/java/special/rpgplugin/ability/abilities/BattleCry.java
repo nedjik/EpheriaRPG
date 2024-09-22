@@ -3,7 +3,6 @@ package special.rpgplugin.ability.abilities;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.entity.LivingEntity;
-import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import special.rpgplugin.ability.Ability;
@@ -17,7 +16,7 @@ import java.util.List;
 
 public class BattleCry extends Ability {
     public BattleCry() {
-        super(AbilitySelector.ALLIES, AbilityShape.CIRCLE);
+        super(AbilitySelector.ALLIES, AbilityShape.CIRCLE, "Боевой клич", 15, 10);
     }
 
     @Override

@@ -17,7 +17,7 @@ import java.util.List;
 
 public class ManaBolt extends ProjectileAbility {
     public ManaBolt(){
-        super(AbilitySelector.ENEMY, 0);
+        super(AbilitySelector.ENEMY, 0, "Магический выстрел", 3, 5);
     }
 
     @Override

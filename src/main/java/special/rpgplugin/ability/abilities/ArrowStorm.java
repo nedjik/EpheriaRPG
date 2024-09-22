@@ -18,7 +18,7 @@ import java.util.List;
 
 public class ArrowStorm extends ProjectileAbility {
     public ArrowStorm() {
-        super(AbilitySelector.ENEMY, 0);
+        super(AbilitySelector.ENEMY, 0, "Град стрел", 20, 15);
     }
 
     @Override

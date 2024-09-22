@@ -4,7 +4,6 @@ import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.entity.LivingEntity;
-import org.bukkit.event.entity.ProjectileHitEvent;
 import special.rpgplugin.ability.Ability;
 import special.rpgplugin.ability.AbilitySelector;
 import special.rpgplugin.ability.AbilityShape;
@@ -17,7 +16,7 @@ import java.util.List;
 public class Lunge extends Ability {
 
     public Lunge(){
-        super(AbilitySelector.ENEMY, AbilityShape.RAY);
+        super(AbilitySelector.ENEMY, AbilityShape.RAY, "Рывок", 10, 5);
     }
     @Override
     public void execute(PlayerWraper player) {

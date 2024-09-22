@@ -9,8 +9,8 @@ import java.util.List;
 public abstract class ProjectileAbility extends Ability{
 
     private double radius;
-    public ProjectileAbility(AbilitySelector selector, double radius) {
-        super(selector, AbilityShape.PROJECTILE);
+    public ProjectileAbility(AbilitySelector selector, double radius, String name, double cooldown, double manaCost) {
+        super(selector, AbilityShape.PROJECTILE, name, cooldown, manaCost);
         this.radius = radius;
     }
     public abstract void executeOnEvent(ProjectileHitEvent event);

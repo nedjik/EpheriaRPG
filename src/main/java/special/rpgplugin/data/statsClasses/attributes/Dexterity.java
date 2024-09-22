@@ -12,6 +12,6 @@ public class Dexterity extends IStat {
 
     @Override
     protected void updateParam() {
-        new PlayerWraper(player).getStat(StatsEnum.SPEED).setBaseValue(Math.round((Math.pow(getBaseValue(),1/2.5)/2.511)*1000)/1000);
+        new PlayerWraper(player).getStat(StatsEnum.SPEED).setBaseValue(Math.round((Math.pow(getBaseValue(),1/2.5)/2.511)*1000.0)/1000.0);
     }
 }

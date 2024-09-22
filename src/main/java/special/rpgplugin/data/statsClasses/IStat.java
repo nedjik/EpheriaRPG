@@ -34,6 +34,9 @@ public abstract class IStat {
     public String getColorTag(){
         return colorTag;
     }
+    public String getSymbol(){
+        return symbol;
+    }
 
     public void setBaseValue(double baseValue){
         this.baseValue = baseValue;

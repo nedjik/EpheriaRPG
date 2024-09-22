@@ -5,9 +5,12 @@ import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerSwapHandItemsEvent;
 import special.rpgplugin.data.*;
+import special.rpgplugin.data.statsClasses.CountableStatEnum;
 import special.rpgplugin.data.statsClasses.IStat;
+import special.rpgplugin.data.statsClasses.IStatCountable;
 import special.rpgplugin.data.statsClasses.StatsEnum;
 import special.rpgplugin.data.statsClasses.attributes.AttributeEnum;
+import special.rpgplugin.other.ActionBarStateEnum;
 
 import java.util.UUID;
 
@@ -41,6 +44,7 @@ public class PlayerWraper {
     public PlayerClass getPlayerClass(){
         return playerData.getPlayerClass();
     }
+
     public int getPlayerLevel(){
         return playerData.getPlayerLevel();
     }
@@ -51,15 +55,39 @@ public class PlayerWraper {
         playerData.setPlayerLevel(level);
     }
 
-    public boolean isOnline(){
-        return player.isOnline();
+    public boolean bindAbility(int slot, String abilityName){
+        return playerData.bindAbility(slot, abilityName);
     }
-    public String getName(){
-        return player.getName();
+    public String getBind(int slot){
+        return playerData.getBind(slot);
+    }
+    public String[] getBinds(){
+        return playerData.getAbilityBinds();
     }
 
     public IStat getStat(StatsEnum stat){
         return statData.getStat(stat);
+    }
+    public IStatCountable getCountableStat(CountableStatEnum stat) {
+        return statData.getCountableStat(stat);
+    }
+    public double getHealth() {
+        return getCountableStat(CountableStatEnum.HEALTH).getCount();
+    }
+    public double getMana() {
+        return getCountableStat(CountableStatEnum.MANA).getCount();
+    }
+    public void damage(double count) {
+        getCountableStat(CountableStatEnum.HEALTH).spend(count);
+    }
+    public void damage(double count, boolean inPercent) {
+        getCountableStat(CountableStatEnum.HEALTH).spend(count, inPercent);
+    }
+    public void spendMana(double count) {
+        getCountableStat(CountableStatEnum.MANA).spend(count);
+    }
+    public void spendMana(double count, boolean inPercent) {
+        getCountableStat(CountableStatEnum.MANA).spend(count, inPercent);
     }
     public IStat getAttribute(AttributeEnum attribute){
         return statData.getAttribute(attribute);
@@ -76,6 +104,13 @@ public class PlayerWraper {
         return 1;
     }
 
+    public ActionBarStateEnum getABarState(){
+        return getStateData().actionBarState();
+    }
+    public void setABarState(ActionBarStateEnum state){
+        getStateData().setActionBarState(state);
+    }
+
     public UUID getUniqueId(){
         return player.getUniqueId();
     }
@@ -88,12 +123,13 @@ public class PlayerWraper {
     public Location getEyeLocation(){
         return player.getEyeLocation();
     }
-
+    public boolean isOnline(){
+        return player.isOnline();
+    }
+    public String getName(){
+        return player.getName();
+    }
     public Location getLocation() {
         return player.getLocation();
-    }
-
-    public double getHealth() {
-        return player.getHealth();
     }
 }

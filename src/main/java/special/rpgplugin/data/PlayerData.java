@@ -1,7 +1,13 @@
 package special.rpgplugin.data;
 
 import org.bukkit.entity.Player;
+import special.rpgplugin.ability.AbilityRegistry;
 import special.rpgplugin.data.statsClasses.attributes.AttributeEnum;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class PlayerData {
 
@@ -18,6 +24,7 @@ public class PlayerData {
     private StatData statData;
     private ConsistData consistData;
     private PlayerState playerState;
+    private final String[] abilityBinds = new String[4];
 
     public PlayerClass getPlayerClass() {
         return playerClass;
@@ -51,4 +58,24 @@ public class PlayerData {
     public PlayerState getPlayerState(){
         return playerState;
     }
+
+    public String[] getAbilityBinds(){
+        return abilityBinds;
+    }
+    public String getBind(int slot){
+        if (slot - 1 <= abilityBinds.length && slot > 0){
+            return abilityBinds[slot-1];
+        }
+        return null;
+    }
+    public boolean bindAbility(int slot, String abilityName){
+        if (slot - 1 <= abilityBinds.length && slot > 0){
+            if (AbilityRegistry.getAbility(abilityName) != null){
+                abilityBinds[slot-1] = abilityName;
+                return true;
+            }
+        }
+        return false;
+    }
+
 }

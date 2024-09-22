@@ -7,6 +7,7 @@ import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import special.rpgplugin.other.ActionBarStateEnum;
 import special.rpgplugin.utils.PlayerUtil;
 
 import java.awt.*;
@@ -20,6 +21,7 @@ public class PlayerState {
 
     private final Player player;
     private boolean spellPick = false;
+    private ActionBarStateEnum actionBarState = ActionBarStateEnum.BASE;
 
     public boolean inSpellPick() {
         return spellPick;
@@ -29,11 +31,19 @@ public class PlayerState {
         this.spellPick = spellPick;
         if (spellPick == true){
             player.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).addModifier(new AttributeModifier("spellSlow", -0.9, AttributeModifier.Operation.MULTIPLY_SCALAR_1));
-            player.sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(PlayerUtil.getPlayerData(player).getPlayerClass().getSpellListForActionBar()));
+            setActionBarState(ActionBarStateEnum.SPELL_PICK);
         } else {
             for (AttributeModifier attributeModifier: player.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).getModifiers()) {
                 player.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).removeModifier(attributeModifier);
+                setActionBarState(ActionBarStateEnum.BASE);
             }
         }
+    }
+
+    public ActionBarStateEnum actionBarState(){
+        return actionBarState;
+    }
+    public void setActionBarState(ActionBarStateEnum state){
+        actionBarState = state;
     }
 }

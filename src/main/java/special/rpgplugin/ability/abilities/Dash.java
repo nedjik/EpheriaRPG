@@ -1,7 +1,6 @@
 package special.rpgplugin.ability.abilities;
 
 import org.bukkit.Sound;
-import org.bukkit.event.entity.ProjectileHitEvent;
 import special.rpgplugin.ability.Ability;
 import special.rpgplugin.ability.AbilitySelector;
 import special.rpgplugin.utils.EntityUtil;
@@ -9,7 +8,7 @@ import special.rpgplugin.utils.PlayerWraper;
 
 public class Dash extends Ability {
     public Dash() {
-        super(AbilitySelector.SELF, null);
+        super(AbilitySelector.SELF, null, "Рывок", 5, 0);
     }
 
     @Override

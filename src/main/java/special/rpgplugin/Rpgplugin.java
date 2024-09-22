@@ -5,6 +5,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import special.rpgplugin.ability.AbilityRegistry;
 import special.rpgplugin.ability.ProjectileEvent;
+import special.rpgplugin.managers.ActionBarManager;
 import special.rpgplugin.managers.TeamManager;
 
 public final class Rpgplugin extends JavaPlugin{
@@ -20,9 +21,13 @@ public final class Rpgplugin extends JavaPlugin{
         this.getCommand("class").setExecutor(new commandManager(this));
         this.getCommand("stat").setExecutor(new commandManager(this));
         this.getCommand("info").setExecutor(new commandManager(this));
+        this.getCommand("stats").setExecutor(new commandManager(this));
+        this.getCommand("bind").setExecutor(new commandManager(this));
 
         this.getServer().getPluginManager().registerEvents(new eventListener(), this);
         this.getServer().getPluginManager().registerEvents(new ProjectileEvent(), this);
+
+        ActionBarManager.getInstance().updateCycle();
 
         AbilityRegistry.registerAllAbilities();
     }

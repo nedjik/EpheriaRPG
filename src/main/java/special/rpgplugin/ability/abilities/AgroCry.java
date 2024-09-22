@@ -3,7 +3,6 @@ package special.rpgplugin.ability.abilities;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.entity.*;
-import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import special.rpgplugin.ability.Ability;
@@ -16,7 +15,7 @@ import java.util.List;
 
 public class AgroCry extends Ability {
     public AgroCry() {
-        super(AbilitySelector.ENEMY, AbilityShape.CIRCLE);
+        super(AbilitySelector.ENEMY, AbilityShape.CIRCLE, "Крик", 10, 5);
     }
 
     @Override

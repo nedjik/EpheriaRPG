@@ -17,7 +17,7 @@ import java.util.List;
 
 public class Fireball extends ProjectileAbility {
     public Fireball() {
-        super(AbilitySelector.ENEMY, 3);
+        super(AbilitySelector.ENEMY, 3, "Фаербол", 20, 20);
     }
 
     @Override

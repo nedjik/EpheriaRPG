@@ -1,6 +1,7 @@
 package special.rpgplugin.data.statsClasses.attributes;
 
 import org.bukkit.entity.Player;
+import special.rpgplugin.data.statsClasses.CountableStatEnum;
 import special.rpgplugin.data.statsClasses.IStat;
 import special.rpgplugin.data.statsClasses.StatsEnum;
 import special.rpgplugin.utils.PlayerWraper;
@@ -12,6 +13,6 @@ public class Constitution extends IStat {
 
     @Override
     protected void updateParam() {
-        new PlayerWraper(player).getStat(StatsEnum.HEALTH).setBaseValue(5+(Math.floor((getBaseValue()-10)/5)*2));
+        new PlayerWraper(player).getCountableStat(CountableStatEnum.HEALTH).setBaseValue(15+(Math.floor(getBaseValue()-5)));
     }
 }
